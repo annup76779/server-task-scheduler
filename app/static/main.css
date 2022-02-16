@@ -1,0 +1,214 @@
+@import url('https://fonts.googleapis.com/css2?family=Cookie&family=Ubuntu&display=swap');
+
+*{
+    padding: 0px;
+    margin: 0px;
+}
+body{
+    background-color: white;
+    font-family: Ubuntu;
+    color: #1f2421;
+}
+
+.head{
+    font-family: Cookie;
+    font-weight: bold;
+}
+
+#add-job-form{
+    margin-top:9%;
+    box-shadow: 0px 0px 4px 0px #9cc5a1;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    background:white;
+}
+#view-jobs-frame{
+    display: none;
+}
+
+.heading{
+    text-align: center;
+    color: #9cc5a1;
+    background-color: #1f2421;
+    letter-spacing: 5px;
+    padding-top:80px;
+    padding-bottom: 30px;;
+    border-top-left-radius: 10px;
+    height: inherit;
+}
+.heading span{
+    line-height: 60px;
+    font-weight: bold;
+    font-size: 50px;
+    display: inherit;
+}
+.heading #row1{
+    word-spacing: 40px;
+}
+.heading #row2{
+    font-size: 80px;
+}
+
+.navbar{
+    border-bottom: 1px solid  #1f2421;
+}
+
+#title{
+    text-decoration: none;
+    padding-left: 8px;
+    font-size: 20px;
+    color: #1f2421;
+    pointer-events: none;
+}
+
+.blinker{
+    animation: blink-caret 0.75s infinite;
+}
+
+@keyframes blink-caret {
+    from, to { color: transparent }
+    50% { color: inherit; }
+}
+
+.options-navbar{
+    position: absolute;
+    display: inline-block;
+    right: 5px;
+    color: #1f2421;
+    text-align: right;
+}
+
+.options-navbar .btn{
+    border-radius: 30px;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+    font-weight: bold;
+}
+
+#account{
+    position: relative;
+    right: 10px;
+    margin-left: 20px;
+    color: lightgray;
+    cursor: pointer;
+}
+
+#user_options{
+    position: absolute;
+    background: white;
+    right: 10px;
+    margin-top: 7px;
+    text-align: left;
+    padding-left: 10px;
+    padding-right: 30px;
+    padding-top: 7px;
+    box-shadow: 0px 0px 4px 0px #9cc5a1;
+    display: none;
+    border-radius: 10px;
+}
+#user_options ul a{
+    text-decoration: none;
+    color: #1f2421;
+    font-weight: bold;
+}
+#user_options ul li{
+    list-style: none;
+    text-indent: -30px;
+}
+
+
+.notify{
+    min-height: 30px;
+    width: 100%;
+}
+
+
+/* 
+    view jobs pannel
+*/
+.filter-option{
+    position: relative;
+    height: 100%;
+    padding: 20px;
+    padding-left: 0px;
+    border-left: 1px solid #ccc; 
+}
+.filter-option h4{
+    text-indent: 30px;
+}
+.filter-option ul li{
+    list-style: none;
+    cursor: pointer;
+}
+
+.filter-option ul li ul li{
+    list-style-type: disc;
+    font-size: 14px;
+}
+
+
+/* 4K devices */
+@media screen and (min-width: 2560px){
+    #title{
+        font-size: 30px;
+    }
+    .options-navbar .btn{
+        font-size:20px;
+    }
+    .options-navbar svg{
+        height:60px;
+        width: 60px;
+    }
+}
+
+/* lappy */
+@media screen and (max-width: 1200px){
+    .heading span{
+        font-size: 40px;
+    }
+}
+
+
+/* mobile devices */
+@media screen and (max-width: 600px){
+    #account, #user_options{
+        right: 0px;
+        margin-left: 1px;
+    }
+    .options-navbar{
+        width: 100%;
+        text-align: right;
+        position: relative;
+    }
+    .options-navbar .btn{
+        padding: 5px;
+        padding-left: 9px;
+        padding-right: 9px;
+        font-size: 13px;
+    }
+    #title{
+        display: block;
+        padding-left: 0px;
+    }
+    .heading{
+        text-align: center;
+        padding: none;
+        padding-top: 10px;
+    }
+    .heading span{
+        line-height: 0px;
+        font-size: 24px;
+        display: inline-block;
+    }
+    .heading #row1{
+        word-spacing: 0px;
+    }
+    .heading #row2{
+        font-size: 30px;
+    }
+    #add-job-form, .heading{
+        border-radius: 0px;
+    }
+}

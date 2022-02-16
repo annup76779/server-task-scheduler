@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" 
+    integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cookie&family=Ubuntu&display=swap');
+        body{
+            font-family: 'Ubuntu';
+        }
+        .head{
+            font-family: Cookie;
+            font-weight: bold;
+        }
+        .main-form-div{
+            margin-top: 7%;
+            color: #1f2421;
+            box-shadow: 0px 0px 4px 0px #9cc5a1;
+            border-radius: 10px;
+        }
+    </style>
+    <title>Sign Up</title>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-4"></div>
+            <div class="col-lg-4 p-5 main-form-div text-center" style="pointer-events: none;">
+                <h1 class="head">Sign up</h1>
+                <h6 style="color: #aaafab;">Create a free account with email.</h6>
+                <div class="col-lg-12 alert-box" style="text-align: left;"></div>
+                <form action="{{url_for('user.register')}}" class="text-left mt-4 mb-4" method="post" style="pointer-events: all;">
+                    <input type="text" name="full_name" id="full_name" class="form-control mt-3" placeholder="Full Name">
+                    <input type="email" name="email" id="email" class="form-control mt-3" placeholder="Email">
+                    <input type="password" name="password" id="password" class="form-control mt-3" placeholder="Password">
+                    <button type="submit" style="width: 100%; border-radius:10px; font-weight: bold;" class="btn btn-primary mt-2 p-2">
+                        Create your free account
+                    </button>
+                </form>
+                <hr>
+                <b>Already have an account? <a href="{{url_for('user.login')}}" style="pointer-events: all;">Sign in</a></b>
+            </div>
+            <div class="col-lg-4"></div>
+        </div>
+    </div>
+</body>
+<script>
+    window.onload = function(){
+        var alert_box = document.querySelector(".alert-box");
+        var i = 0;
+        {% with messages = get_flashed_messages(with_categories = True) %}
+            {% if messages %}
+                {% for category,message in messages %}
+                    var text = {{message|tojson}};
+                    var type = {{category|tojson}};
+                    var alert_html = '<div class=" col-lg-12 alert alert-'+ type +' alert-dismissible fade show" role="alert"><span id="alt-item'+i+'"></span></div>'
+                    alert_box.insertAdjacentHTML("beforeend",alert_html);
+                    document.getElementById('alt-item'+i).innerText = text;
+                    i++;
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    }
+</script>
+</html>
+
+<!-- #1f2421; #216869; #49a078; #9cc5a1; #dce1de -->

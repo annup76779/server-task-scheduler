@@ -1,0 +1,5 @@
+fypv1.py
+env
+server-configs
+__pycache__
+app/main.db
