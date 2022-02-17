@@ -79,7 +79,7 @@ class Jobs(db.Model):
             given_time = dt(k.year, k.month, k.day, k.hour, k.minute, tzinfo=timezone)
             
             c = dt.now(timezone)
-            current_time = dt(c.year, c.month, c.day, c.hour, c.minute)
+            current_time = dt(c.year, c.month, c.day, c.hour, c.minute, tzinfo=timezone)
 
             if current_time > given_time:
                 raise SchedulingTimeError(time.tzname[time.daylight])
