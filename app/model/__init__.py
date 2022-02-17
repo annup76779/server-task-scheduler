@@ -1,10 +1,10 @@
 import time
 from app import db, crypt, UserMixin, current_app
-from app.model.util import is_valid_email, SchedulingTimeError
+from app.model.util import is_valid_email, SchedulingTimeError, InvalidServiceRequest
 from datetime import datetime as dt
 from uuid import uuid4
 import os
-import threading 
+import pytz
 import time
 
 
@@ -55,6 +55,14 @@ class Jobs(db.Model):
     status = db.Column(db.Integer, nullable=False)
     description = db.Column(db.UnicodeText)
 
+    @property
+    def micro(self):
+        type_ = self.tool_used.split()[-1]
+        return dict(id = self.job_id, type_=type_, tool_used=self.tool_used, ref_name = self.ref_name,
+            date_ = f'{self.year}-{self.month}-{self.day}', time_= self.time.strftime("%H:%M")
+        )
+
+
     def __init__(self, user, ref_name, scheduled_for, command_used, tool_used):
         self.tool_used = current_app.config["TOOLS"].get(tool_used)
         if tool_used is not None: # if tool requested is available
@@ -64,8 +72,15 @@ class Jobs(db.Model):
             self.command_used = command_used
 
             # rest to do
+            print(current_app.config["TIMEZONE"])
+            timezone = current_app.config["TIMEZONE"]
+
             given_time = dt.strptime(scheduled_for, "%Y-%m-%d %H:%M")
-            current_time = dt.now()
+            print(given_time)
+            given_time = given_time.astimezone(timezone)
+            print(given_time)
+            current_time = dt.now(timezone)
+            print("current_time", current_time)
 
             if current_time > given_time:
                 raise SchedulingTimeError(time.tzname[time.daylight])
@@ -76,6 +91,8 @@ class Jobs(db.Model):
             self.time, self.stime = given_time.time(), current_time.time()
 
             self.status = 0
+        else:
+            raise InvalidServiceRequest("Invalid schedule request")
 
     def __str__(self):
         return self.command_used
@@ -98,6 +115,8 @@ class Jobs(db.Model):
         self.completedOn = dt.now() # current time
         if os.path.exists(output_path):
             with open(output_path) as f:
-                self.description = f.read()
+                output = f.read()
+                output.replace("\n", "<br>")
+                self.description = output
             os.remove(output_path)
 

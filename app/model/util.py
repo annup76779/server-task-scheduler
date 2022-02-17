@@ -13,6 +13,11 @@ class SchedulingTimeError(Exception):
     def __str__(self):
         return f"DateTime greater than current time. Our timezone - {self.timezone}"
 
+class InvalidServiceRequest(Exception):
+    def __init__(self,e):
+        self.msg = e
+    def __str__(self):
+        return f"{self.msg}"
 
 def is_valid_email(email: str):
     exp = re.compile(r"[a-z0-9]+(\.[a-z0-9]+)*@[a-z]+(\.[a-z]+)+")
@@ -33,10 +38,9 @@ def async_task(fn):
 
 
 # scheduler functions
-@async_task
-def emailNotification(receiver):
-    EMAIL_ADDRESS = "fypemail001@gmail.com"
-    EMAIL_PASS = os.environ.get("EMAIL_PASS")
+def emailNotification(job, sender, password):
+    EMAIL_ADDRESS = sender
+    EMAIL_PASS = password
 
     with smtplib.SMTP("smtp.gmail.com", 587) as smtp:
         smtp.ehlo()  # identify ourselve with smtp server
@@ -48,12 +52,13 @@ def emailNotification(receiver):
 
         smtp.login(EMAIL_ADDRESS, EMAIL_PASS)
 
-        subject = "Scan Completed"
-        body = "Hey,\n\tThis is to notify that your scan has been completed"
+        subject = f"Scan Completed - {job.tool_used}"
+        body = "Hey,\n\tThis is to notify that your scan has been completed"\
+            f"\nReference name: {job.ref_name}\nJob Id: {job.job_id}\nCompleted at: {job.completedOn.strftime('%Y-%m-%d %H:%M')}"
 
         msg = f"Subject: {subject}\n\n{body}"
 
-        smtp.sendmail(EMAIL_ADDRESS, receiver, msg)
+        smtp.sendmail(EMAIL_ADDRESS, job.user, msg)
 
 def processManager(command,path,wait=5):
     print(">>> starting process of process manager ... <<<")
@@ -66,7 +71,6 @@ def processManager(command,path,wait=5):
         print("Process complete in LINUX.")
 
 def scanServerNikto(job, path):
-    print(str(job))
     processManager(str(job),path,5)
     
 def scanWebsiteNikto(job,path):

@@ -71,3 +71,10 @@ def register():
 @login_required
 def dashboard():
     return render_template("scheduler.html")
+
+
+@user_bp.route("/logout")
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for("user.login"))

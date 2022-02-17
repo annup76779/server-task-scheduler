@@ -1,6 +1,8 @@
 from datetime import timedelta
 import os
 
+import pytz
+
 class Config(object):
     ROOT = os.path.dirname(__file__)
     APP_NAME = "scheduler"
@@ -17,13 +19,17 @@ class Config(object):
         "1": "Nikto Server", "2": "Nikto Website", "3": "Zap API"
     }
 
+    APP_EMAIL = "fypemail001@gmail.com"
+    EMAIL_PASS = os.environ.get("EMAIL_PASS")
+
 
 class Development(Config):
     SQLALCHEMY_TRACK_MODIFICATIONS = True
     SQLALCHEMY_DATABASE_URI = "sqlite:///main.db"
+    TIMEZONE = pytz.timezone("Asia/Kolkata")
 
 class Production(Config):
-    pass
+    TIMEZONE = pytz.timezone("Asia/Kuala_Lumpur")
 
 class Testing(Config):
     TESTING = True
