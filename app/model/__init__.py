@@ -75,12 +75,11 @@ class Jobs(db.Model):
             print(current_app.config["TIMEZONE"])
             timezone = current_app.config["TIMEZONE"]
 
-            given_time = dt.strptime(scheduled_for, "%Y-%m-%d %H:%M")
-            print(given_time)
-            given_time = given_time.astimezone(timezone)
-            print(given_time)
-            current_time = dt.now(timezone)
-            print("current_time", current_time)
+            k = dt.strptime(scheduled_for, "%Y-%m-%d %H:%M")
+            given_time = dt(k.year, k.month, k.day, k.hour, k.minute, tzinfo=timezone)
+            
+            c = dt.now(timezone)
+            current_time = dt(c.year, c.month, c.day, c.hour, c.minute)
 
             if current_time > given_time:
                 raise SchedulingTimeError(time.tzname[time.daylight])
