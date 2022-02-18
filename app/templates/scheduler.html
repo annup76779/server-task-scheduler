@@ -6,8 +6,253 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" 
     integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-    <link rel="stylesheet" href="{{url_for('static', filename='main.css')}}">
     <title>Dashboard</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cookie&family=Ubuntu&display=swap');
+
+        *{
+            padding: 0px;
+            margin: 0px;
+        }
+        body{
+            background-color: white;
+            font-family: Ubuntu;
+            color: #1f2421;
+        }
+
+        .btn-primary{
+            background-color: #FF5733;
+            border-color: #FF5733;
+        }
+        .btn-primary:hover{
+            background-color: #FF5733;
+            border-color: #FF5733;
+        }
+        .btn-primary:active{
+            background-color: #ff583393;
+            border-color: #FF5733;
+            box-shadow: 0px 0px 0px 4px hsla(11, 100%, 60%, 0.493) !important;
+        }
+        .btn-primary:focus{
+            background-color: #FF5733;
+            border-color: #FF5733;
+            box-shadow: 0px 0px 0px 4px hsla(11, 100%, 60%, 0.493) !important;
+        }
+        .btn-outline-primary{
+            color: #FF5733;
+            border-color: #FF5733;
+        }
+        .btn-outline-primary:hover{
+            color: white;
+            background-color: #FF5733;
+            border-color: #FF5733;
+        }
+        .btn-outline-primary:active{
+            border-color: #FF5733;
+            box-shadow: 0px 0px 0px 4px hsla(11, 100%, 60%, 0.493) !important;
+        }
+        .btn-outline-primary:focus{
+            border-color: #FF5733;
+            box-shadow: 0px 0px 0px 4px hsla(11, 100%, 60%, 0.493) !important;
+        }
+        .head{
+            font-family: Cookie;
+            font-weight: bold;
+        }
+
+        #add-job-form{
+            margin-top:9%;
+            box-shadow: 0px 0px 4px 0px #9cc5a1;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+            background:white;
+        }
+        #view-jobs-frame{
+            display: none;
+        }
+
+        .heading{
+            text-align: center;
+            color: #9cc5a1;
+            background-color: #1f2421;
+            letter-spacing: 5px;
+            padding-top:80px;
+            padding-bottom: 30px;;
+            border-top-left-radius: 10px;
+            height: inherit;
+        }
+        .heading span{
+            line-height: 60px;
+            font-weight: bold;
+            font-size: 40px;
+            display: inherit;
+        }
+
+        .navbar{
+            border-bottom: 1px solid  #1f2421;
+        }
+
+        #title{
+            text-decoration: none;
+            padding-left: 8px;
+            font-size: 20px;
+            color: #1f2421;
+            pointer-events: none;
+        }
+
+        .blinker{
+            animation: blink-caret 0.75s infinite;
+        }
+
+        @keyframes blink-caret {
+            from, to { color: transparent }
+            50% { color: inherit; }
+        }
+
+        .options-navbar{
+            position: absolute;
+            display: inline-block;
+            right: 5px;
+            color: #1f2421;
+            text-align: right;
+        }
+
+        .options-navbar .btn{
+            border-radius: 30px;
+            padding-left: 15px;
+            padding-right: 15px;
+            padding-top: 6px;
+            padding-bottom: 6px;
+            font-weight: bold;
+        }
+
+        #account{
+            position: relative;
+            right: 10px;
+            margin-left: 20px;
+            color: lightgray;
+            cursor: pointer;
+        }
+
+        #user_options{
+            position: absolute;
+            background: white;
+            right: 10px;
+            margin-top: 7px;
+            text-align: left;
+            padding-left: 10px;
+            padding-right: 30px;
+            padding-top: 7px;
+            box-shadow: 0px 0px 4px 0px #9cc5a1;
+            display: none;
+            border-radius: 10px;
+        }
+        #user_options ul a{
+            text-decoration: none;
+            color: #1f2421;
+            font-weight: bold;
+        }
+        #user_options ul li{
+            list-style: none;
+            text-indent: -30px;
+        }
+
+
+        .notify{
+            min-height: 30px;
+            width: 100%;
+        }
+
+
+        /* 
+            view jobs pannel
+        */
+        .filter-option{
+            position: relative;
+            height: 100%;
+            padding: 20px;
+            padding-left: 0px;
+            border-left: 1px solid #ccc; 
+        }
+        .filter-option h4{
+            text-indent: 30px;
+        }
+        .filter-option ul li{
+            list-style: none;
+            cursor: pointer;
+        }
+
+        .filter-option ul li ul li{
+            list-style-type: disc;
+            font-size: 14px;
+        }
+
+
+        /* 4K devices */
+        @media screen and (min-width: 2560px){
+            #title{
+                font-size: 30px;
+            }
+            .options-navbar .btn{
+                font-size:20px;
+            }
+            .options-navbar svg{
+                height:60px;
+                width: 60px;
+            }
+        }
+
+        /* lappy */
+        @media screen and (max-width: 1200px){
+            .heading span{
+                font-size: 40px;
+            }
+        }
+
+
+        /* mobile devices */
+        @media screen and (max-width: 600px){
+            #account, #user_options{
+                right: 0px;
+                margin-left: 1px;
+            }
+            .options-navbar{
+                width: 100%;
+                text-align: right;
+                position: relative;
+            }
+            .options-navbar .btn{
+                padding: 5px;
+                padding-left: 9px;
+                padding-right: 9px;
+                font-size: 13px;
+            }
+            #title{
+                display: block;
+                padding-left: 0px;
+            }
+            .heading{
+                text-align: center;
+                padding: none;
+                padding-top: 10px;
+            }
+            .heading span{
+                line-height: 0px;
+                font-size: 24px;
+                display: inline-block;
+            }
+            .heading #row1{
+                word-spacing: 0px;
+            }
+            .heading #row2{
+                font-size: 30px;
+            }
+            #add-job-form, .heading{
+                border-radius: 0px;
+            }
+        }
+
+    </style>
 </head>
 <body>
     <div class="container-fluid">
@@ -15,7 +260,7 @@
             <!-- navbar starts -->
             <div class="col-lg-12 navbar p-2">
                 <a href="#" id="title">
-                    Job <big class='head'>Scheduler</big> App<span class="blinker">_</span>
+                    ATX Security System<span class="blinker">_</span>
                 </a>
                 <div class="col-lg-6 text-right options-navbar">
                     <button class="btn btn-outline-primary btn-sm" onclick="show_schedule_frame();">Schedule a Job</button>
@@ -39,13 +284,13 @@
             <div class="col-lg-8 " id="add-job-form">
                 <div class="row" style="vertical-align:middle;">
                     <div class="col-sm-5 heading">
-                        <span id="row1">Let us</span>
-                        <span class="head" id="row2">schedule</span>
-                        <span>your job<b class="blinker">_</b></span>
+                        <span id="row1">Schedule</span>
+                        <span>your</span>
+                        <span>security scan<b class="blinker">_</b></span>
                     </div>
                 
                     <div class="col-sm-7 text-center" style="padding: 30px; padding-top:10px; padding-bottom: 10px;">
-                        <h5>Configure you job here.</h5>
+                        <h5>Schedule your security scan here.</h5>
                         <div class="notify">
                             <div class="col-lg-12 alert-box" id="scheduler_alert_box" style="color: #dce1dee7;margin-bottom: 5px;">Notifications Here</div>
                         </div>
@@ -163,8 +408,116 @@
     </div>
 </body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
-<script src="{{url_for('static', filename='dashboard.js')}}"></script>
 <script>
+    schedule_frame = document.getElementById("add-job-form");
+    view_jobs_frame = document.getElementById("view-jobs-frame");
+    table = document.querySelector("#table tbody");
+    date_input_box = document.querySelector("#sdate");
+    var load_more = true;
+    var current_page_count = 1;
+    var mini_loader = document.querySelector("#loader");
+    current_url = "/api/get_all_jobs";
+
+    show_user_option = (el) =>{
+        let target = document.getElementById('user_options');
+        if (el.getAttribute('data-toggle') === "off"){
+            target.style.display = "block";
+            el.setAttribute('data-toggle',"on");
+        }
+        else{
+            target.style.display = "none";
+            el.setAttribute('data-toggle',"off");
+        }
+    }
+
+    requestDate = () =>{
+        date = date_input_box.value;
+        current_url = `/api/get_job_by_date?scheduledFor=${date}&page=${current_page_count}`;
+        table.innerHTML = "";
+        // current_page_count = 1;
+        load_more = true;
+        getJobs();
+    }
+
+    allJobs = () =>{
+        current_url = `/api/get_all_jobs?page=${current_page_count}`;
+        table.innerHTML = "";
+        // current_page_count = 1;
+        load_more = true;
+        getJobs();
+    }
+
+    async function getJobs(){
+        if (load_more){  
+            if (current_page_count!=1)
+                mini_loader.style.display = "block";
+            let options = {
+                "Accpts": "application/*",
+            }
+            response = await fetch(current_url,{
+                    method: "GET",
+                    headers: options
+                }).then(function(response){
+                    if (response.status == 200)
+                        return response.json();
+                    return Promise.reject(response);
+                }).then(function(data){
+                    return data;
+                }).catch(function(error){
+                    console.log(error);
+                });
+            if (response.status = true)
+                settle_jobs(response);
+            else
+                alert(response.response);
+            mini_loader.style.display = "none";
+        }
+    }
+
+    function settle_jobs(response){
+        for(var i = response.jobs.length-1; i > -1 ; i--){
+            job = response.jobs[i];
+            html = `
+            <tr>
+                <th scope="row">${response.jobs.length-(i)}</th>
+                <td>${job.type_}  ${
+                        (job.status == 1)?"<span class='text-success' style='font-size: 11px;'>Done</span>":
+                        "<span class='text-info' style='font-size: 11px;'>Running</span>"
+                    }</td>
+                <td>${job.ref_name.substring(0, 30)}${(job.ref_name.length > 30)?"...":""}</td>
+                <td>${job.date_}</td>
+                <td>${job.time_}</td>
+                <td>${job.tool_used}</td>
+                <td>
+                    <a href="/api/job/${job.id}" target="_blank">View</a>
+                </td>
+            </tr>
+            `
+            table.insertAdjacentHTML("beforeend", html);
+            // if (current_page_count >= response.total_pages){
+            //     load_more = false; 
+            //     // load_more_btn.remove();
+            // }
+            // else if (current_page_count < response.total_pages){
+            //     current_page_count += 1;
+            //     // load_more_btn.style.display ="block";
+            // }
+        }
+        // alert(current_page_count)
+    }
+
+
+    show_schedule_frame = () =>{
+        schedule_frame.style.display = "block";
+        view_jobs_frame.style.display="none";
+    }
+
+    show_view_jobs_frame = () =>{
+        schedule_frame.style.display = "none";
+        view_jobs_frame.style.display="block";
+        
+    }
+
     window.onload = function(){
         var alert_box = document.querySelector(".alert-box");
         var scheduler_alert_box = document.querySelector("#scheduler_alert_box")
@@ -188,6 +541,7 @@
                 {% endfor %}
             {% endif %}
         {% endwith %}
+        getJobs();
     }
 
 </script>

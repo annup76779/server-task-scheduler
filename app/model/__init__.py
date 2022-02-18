@@ -59,7 +59,7 @@ class Jobs(db.Model):
     def micro(self):
         type_ = self.tool_used.split()[-1]
         return dict(id = self.job_id, type_=type_, tool_used=self.tool_used, ref_name = self.ref_name,
-            date_ = f'{self.year}-{self.month}-{self.day}', time_= self.time.strftime("%H:%M")
+            date_ = f'{self.year}-{self.month}-{self.day}', time_= self.time.strftime("%H:%M"), status = self.status
         )
 
 
@@ -105,9 +105,22 @@ class Jobs(db.Model):
         stime = self.stime
         given_dt = dt(self.year, self.month, self.day, gtime.hour, gtime.minute)
         job_dt = dt(self.syear, self.smonth, self.sday,  stime.hour, stime.minute)
-
         time_diff = given_dt - job_dt
         return time_diff.total_seconds()
+
+    @property
+    def get_current_wait_time(self):
+        c = dt.now(current_app.config["TIMEZONE"])
+        current_time = dt(c.year, c.month, c.day, c.hour, c.minute, tzinfo=current_app.config["TIMEZONE"])
+        gtime = self.time
+        given_dt = dt(self.year, self.month, self.day, gtime.hour, gtime.minute, tzinfo=current_app.config["TIMEZONE"])
+        if given_dt > current_time:
+            time_diff = given_dt - current_time
+            print((time_diff.total_seconds()))
+            return (time_diff.total_seconds())
+        else:
+            return 0
+
 
     def setCompleted(self, output_path):
         self.status = 1
@@ -115,7 +128,6 @@ class Jobs(db.Model):
         if os.path.exists(output_path):
             with open(output_path) as f:
                 output = f.read()
-                output.replace("\n", "<br>")
                 self.description = output
             os.remove(output_path)
 

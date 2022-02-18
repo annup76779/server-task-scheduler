@@ -5,10 +5,55 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Result</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cookie&family=Ubuntu&display=swap');
+        body{
+            font-family: Ubuntu;
+        }
+        .info{
+            color: rgb(4, 0, 255);
+        }
+        .blank{
+            font-size: 70px;
+            background-color: white;
+            color: rgb(214, 214, 214);
+        }
+    </style>
 </head>
 <body>
-    <h3>{{job.job_id}} | {{job.ref_name if job.ref_name}}</h3>
-    <p>{{job.description}}</p>
+    <div class="title">
+        <h2>{{job.ref_name if job.ref_name}}</h2>
+        <h6>Job id: {{job.job_id}}</h6>
+        status: {{{1: "Done", 0:"Running"}[job.status]}}
+        {% set wait_time = job.get_current_wait_time %}
+        {% if job.status == 0 %}
+            Time left<span id="timmer">{{(wait_time//(60 * 60))|int}}:{{((wait_time%(60 * 60))//(60))+1|int}}
+            </span>
+            
+        {% endif %}
+    </div>
+    <hr>
+    Commnad - <code>{{job.command_used}}</code>
+    {% if job.description %}
+        <p>{{job.description.replace("\n", "<br/>")|safe}}</p>
+    {% else %}
+        <p class="blank">No Description</p>
+    {% endif %}
     <p>{{job.completedOn.strftime("%Y-%m-%d %H:%M") if job.completedOn}}</p>
 </body>
+<!-- {% if job.status == 0 %}
+<script>
+    var timmer = document.getElementById("timmer");
+    next_time = (arr) =>{
+        timmer.innerText = `${parseInt((wait_time/(60 * 60)))}:${parseInt((wait_time%(60 * 60))/(60))}:${parseInt((wait_time%(60 * 60))%(60))}`
+    }
+    do{
+        var timmer_val = timmer.innerText.split(":");
+        timmer_val[0] = parseInt(timmer_val[0]); timmer_val[1] = parseInt(timmer_val[1]); timmer_val[2] = parseInt(timmer_val[2]);
+        wait_time = timmer_val[0] + timmer_val[1] + timmer_val[2]; 
+        setTimeout(next_time, 1000, [wait_time]);
+    }while (wait_time > 0);
+    window.location.reload();
+</script>
+{% endif %} -->
 </html>

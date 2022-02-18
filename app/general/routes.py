@@ -104,11 +104,9 @@ def get_job_by_date():
 @login_required
 def get_all_jobs():
     try:
-        page = request.args.get("page", 1)
         user = current_user #User.query.filter_by(email = email).first()
         jobs = user.all_job.all() # filter
-        return jsonify(status = True, jobs = [job.micro for job in jobs],
-        )
+        return jsonify(status = True, jobs = [job.micro for job in jobs])
     except Exception as e:
         print(e)
         return jsonify(status = False, msg="Something went wrong.")

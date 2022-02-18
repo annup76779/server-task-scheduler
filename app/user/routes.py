@@ -59,12 +59,12 @@ def register():
     except IntegrityError:
         db.session.rollback()
         flash(u'This email is already registered.', "danger")
-        return redirect(request.url)
+        return redirect(url_for("user.signup"))
     
     except Exception as e:
         print(e)
         flash(u'An error occurred!', "danger")
-        return redirect(url_for("user.login"))
+        return redirect(url_for("user.signup"))
 
 
 @user_bp.route("/dashboard")

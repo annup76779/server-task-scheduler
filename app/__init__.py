@@ -1,4 +1,4 @@
-from flask import Flask, current_app
+from flask import Flask, current_app, redirect, url_for
 from flask_login import LoginManager, UserMixin
 from flask_bcrypt import Bcrypt
 from flask_sqlalchemy import SQLAlchemy
@@ -61,6 +61,10 @@ def config_blueprints(app):
     from app.general import api
     app.register_blueprint(api)
     os.makedirs(name = os.path.join(PATH, api.static_folder), exist_ok = True)
+
+    @app.route("/")
+    def index():
+        return redirect(url_for("user.dashboard"))
 
 def config_errorHandler(app):
     pass
